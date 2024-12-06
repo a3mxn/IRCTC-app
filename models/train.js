@@ -1,6 +1,5 @@
 const db = require('../config/db');
 
-// Train Model
 const Train = {
   addTrain: (source, destination, totalSeats, callback) => {
     const query = 'INSERT INTO trains (source, destination, total_seats) VALUES (?, ?, ?)';
@@ -15,6 +14,11 @@ const Train = {
   updateSeats: (trainId, seatsAvailable, callback) => {
     const query = 'UPDATE trains SET total_seats = ? WHERE id = ?';
     db.query(query, [seatsAvailable, trainId], callback);
+  },
+
+  getTrainSeats: (trainId, callback) => {
+    const query = 'SELECT * FROM seats WHERE train_id = ?';
+    db.query(query, [trainId], callback);
   }
 };
 

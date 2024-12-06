@@ -1,55 +1,72 @@
 const db = require('../config/db');
 
-// Check seat availability
-exports.checkAvailability = (req, res) => {
+const searchTrain = (req, res) => {
   const { source, destination } = req.body;
+
+  if (!source || !destination) {
+    return res.status(400).json({ error: 'Source and destination are required' });
+  }
 
   const query = 'SELECT * FROM trains WHERE source = ? AND destination = ?';
   db.query(query, [source, destination], (err, results) => {
-    if (err) return res.status(500).json({ error: 'Database error' });
-    if (results.length === 0) return res.status(404).json({ error: 'No trains available' });
-
+    if (err) {
+      return res.status(500).json({ error: 'Database error' });
+    }
     res.status(200).json({ trains: results });
   });
 };
 
-// Book a seat
-exports.bookSeat = (req, res) => {
-  const { trainId } = req.body;
-  const userId = req.userId;  // From JWT
+const bookSeat = (req, res) => {
+  const { trainId, seatNumber } = req.body;
 
-  // Check if seats are available
-  const query = 'SELECT * FROM trains WHERE id = ?';
-  db.query(query, [trainId], (err, results) => {
-    if (err) return res.status(500).json({ error: 'Database error' });
-    if (results.length === 0 || results[0].total_seats <= 0) {
-      return res.status(400).json({ error: 'No seats available' });
+  if (!trainId || !seatNumber) {
+    return res.status(400).json({ error: 'Train ID and seat number are required' });
+  }
+
+  const userId = req.user.id;
+
+  const checkSeatQuery = 'SELECT * FROM bookings WHERE train_id = ? AND seat_number = ?';
+  db.query(checkSeatQuery, [trainId, seatNumber], (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: 'Database error' });
     }
 
-    // Book the seat (update seats)
-    const updateQuery = 'UPDATE trains SET total_seats = total_seats - 1 WHERE id = ?';
-    db.query(updateQuery, [trainId], (err) => {
-      if (err) return res.status(500).json({ error: 'Database error' });
+    if (results.length > 0) {
+      return res.status(400).json({ error: 'Seat is already booked' });
+    }
 
-      // Record the booking
-      const insertQuery = 'INSERT INTO bookings (user_id, train_id) VALUES (?, ?)';
-      db.query(insertQuery, [userId, trainId], (err) => {
-        if (err) return res.status(500).json({ error: 'Database error' });
+    const bookSeatQuery = 'INSERT INTO bookings (train_id, user_id, seat_number) VALUES (?, ?, ?)';
+    db.query(bookSeatQuery, [trainId, userId, seatNumber], (err) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error booking seat' });
+      }
 
-        res.status(200).json({ message: 'Seat booked successfully' });
-      });
+      res.status(200).json({ message: 'Seat booked successfully' });
     });
   });
 };
 
-// Get booking details
-exports.getBookingDetails = (req, res) => {
-  const userId = req.userId;  // From JWT
+const getBookingDetails = (req, res) => {
+  const userId = req.user.id;
 
-  const query = 'SELECT * FROM bookings WHERE user_id = ?';
+  const query = `
+    SELECT b.id AS booking_id, t.id AS train_id, t.source, t.destination, b.seat_number
+    FROM bookings b
+    JOIN trains t ON b.train_id = t.id
+    WHERE b.user_id = ?
+  `;
+
   db.query(query, [userId], (err, results) => {
-    if (err) return res.status(500).json({ error: 'Database error' });
-
+    if (err) {
+      return res.status(500).json({ error: 'Database error' });
+    }
     res.status(200).json({ bookings: results });
   });
+};
+
+module.exports = {
+  searchTrain,
+  bookSeat,
+  getBookingDetails,
 };

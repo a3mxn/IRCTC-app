@@ -1,6 +1,5 @@
 const db = require('../config/db');
 
-// Booking Model
 const Booking = {
   createBooking: (userId, trainId, callback) => {
     const query = 'INSERT INTO bookings (user_id, train_id) VALUES (?, ?)';

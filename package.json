@@ -1,5 +1,5 @@
 {
-  "name": "express-mysql-app",
+  "name": "irctc-app",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -14,12 +14,12 @@
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.5",
-    "sequelize": "^6.37.5",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

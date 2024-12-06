@@ -1,6 +1,5 @@
-const db = require('../config/db'); // Assuming you have a db.js for mysql connection
+const db = require('../config/db');
 
-// User schema as an object for MySQL
 const User = {
   create: (username, email, password, role, callback) => {
     const query = "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)";
@@ -15,9 +14,7 @@ const User = {
   findById: (id, callback) => {
     const query = "SELECT * FROM users WHERE id = ?";
     db.query(query, [id], callback);
-  },
-
-  // Add other methods as needed (e.g., update, delete)
+  }
 };
 
 module.exports = User;

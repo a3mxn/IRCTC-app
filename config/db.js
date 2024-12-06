@@ -1,13 +1,10 @@
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
-
-// Load environment variables from .env file
 const path = require('path');
 require('dotenv').config({ 
-   path: path.resolve(__dirname, '.env')  // Adjust the path to where your .env file is
+   path: path.resolve(__dirname, '.env')  
 });
 
-// Create MySQL database connection pool
 const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -15,13 +12,10 @@ const db = mysql.createPool({
   database: process.env.DB_NAME
 });
 
-// Check database connection
 db.getConnection((err) => {
   if (err) {
     console.error('Error connecting to the database:', err.message);
-    process.exit(1); // Exit the process if database connection fails
-  } else {
-    console.log('Connected to MySQL database');
+    process.exit(1);
   }
 });
 

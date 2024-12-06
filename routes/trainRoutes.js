@@ -1,9 +1,8 @@
-const express = require('express');
-const trainController = require('../controllers/trainController');
-const adminMiddleware = require('../middleware/verifyAdmin');
+const express = require("express");
 const router = express.Router();
+const { addTrain } = require("../controllers/trainController");
+const verifyToken = require("../middleware/verifyAdmin");
 
-// Admin only - Add a new train
-// router.post('/add', adminMiddleware.verifyAdmin, trainController.addTrain);
+router.post("/add", verifyToken ,addTrain);
 
 module.exports = router;

@@ -1,12 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const { signup, login } = require("../controllers/authController");
-const verifyAdmin = require("../middleware/verifyAdmin"); // Import the verifyAdmin middleware
+const verifyAdmin = require("../middleware/verifyAdmin");
 
-// User Signup Route
-router.post("/signup", signup); // No verifyAdmin needed for signup
+router.post("/signup", signup);
 
-// User Login Route
-router.post("/login", verifyAdmin, login); // Apply verifyAdmin middleware to the login route
+router.post("/login", verifyAdmin, login);
 
 module.exports = router;
