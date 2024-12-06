@@ -130,3 +130,53 @@ The server will run on `http://localhost:8787` (or the port defined in `.env`).
 
 - **verifyToken**: Protects routes that require user authentication by verifying the JWT.
 - **verifyAdmin**: Restricts access to admin routes by validating the API key.
+
+## Screenshots - API Testing
+### Signup
+![Alt text](./Screenshots/1.png)
+### Login
+![Alt text](./Screenshots/2.png)
+### Adding train without admin apikey
+![Alt text](./Screenshots/3.png)
+### Adding train with admin apikey
+![Alt text](./Screenshots/4.png)
+### Searching Train
+![Alt text](./Screenshots/5.png)
+### Booking Seat
+![Alt text](./Screenshots/6.png)
+### Booking Seat that is already booked
+![Alt text](./Screenshots/7.png)
+### Getting mybookings
+![Alt text](./Screenshots/8.png)
+
+## Table Structures
+### Table Structure
+
+#### **`trains` Table**
+
+| Column        | Data Type        | Constraints                          |
+|---------------|------------------|--------------------------------------|
+| `id`          | `INT`            | `AUTO_INCREMENT`, `PRIMARY KEY`     |
+| `source`      | `VARCHAR(255)`    | `NOT NULL`                          |
+| `destination` | `VARCHAR(255)`    | `NOT NULL`                          |
+| `total_seats` | `INT`            | `NOT NULL`                          |
+
+#### **`users` Table**
+
+| Column     | Data Type     | Constraints                          |
+|------------|---------------|--------------------------------------|
+| `id`       | `INT`         | `AUTO_INCREMENT`, `PRIMARY KEY`     |
+| `username` | `VARCHAR(255)`| `NOT NULL`                          |
+| `email`    | `VARCHAR(255)`| `NOT NULL`, `UNIQUE`                |
+| `password` | `VARCHAR(255)`| `NOT NULL`                          |
+| `role`     | `VARCHAR(50)` | `NOT NULL`                          |
+
+#### **`bookings` Table**
+
+| Column    | Data Type | Constraints                                    |
+|-----------|-----------|------------------------------------------------|
+| `id`      | `INT`     | `AUTO_INCREMENT`, `PRIMARY KEY`               |
+| `user_id` | `INT`     | `NOT NULL`, `FOREIGN KEY (user_id) REFERENCES users(id)` |
+| `train_id`| `INT`     | `NOT NULL`, `FOREIGN KEY (train_id) REFERENCES trains(id)` |
+
+
