@@ -1,6 +1,16 @@
-# Train Booking System
+# IRCTC-app : Train Booking System
 
 A train booking system that allows users to search for available trains between source and destination, book seats, and view their booking details with differnt enpoints for users and admin This application features a secure backend with user authentication, using JWT for secure logins and MySQL for database management.
+
+## Table of Contents
+
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Setup Instructions](#setup-instructions)
+- [API Endpoints](#api-endpoints)
+- [Middleware](#middleware)
+- [Screenshots - API Testing](#screenshots---api-testing)
+- [Table Structures](#table-structures)
 
 ## Features
 
