@@ -5,6 +5,6 @@ const verifyAdmin = require("../middleware/verifyAdmin");
 
 router.post("/signup", signup);
 
-router.post("/login", verifyAdmin, login);
+router.post("/login", login);
 
 module.exports = router;

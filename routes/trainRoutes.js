@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { addTrain } = require("../controllers/trainController");
-const verifyToken = require("../middleware/verifyAdmin");
+const verifyAdmin = require("../middleware/verifyAdmin");
 
-router.post("/add", verifyToken ,addTrain);
+router.post("/add", verifyAdmin ,addTrain);
 
 module.exports = router;
